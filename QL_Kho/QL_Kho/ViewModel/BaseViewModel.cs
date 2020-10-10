@@ -18,7 +18,7 @@ namespace QL_Kho.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        class RelayCommand<T> : ICommand
+        public class RelayCommand<T> : ICommand
         {
             private readonly Predicate<T> _canExecute;
             private readonly Action<T> _execute;

@@ -1,0 +1,89 @@
+﻿<Window x:Class="QL_Kho.UserWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QL_Kho"
+        mc:Ignorable="d"
+        xmlns:uc="clr-namespace:QL_Kho.UserControlApp"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        DataContext="{StaticResource UserVM}"
+        WindowStyle="None" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Name="window"
+        Title="User" Height="450" Width="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <uc:ControlBarUC Tag="{Binding Title, ElementName=window}"></uc:ControlBarUC>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <!--Các element binding khi user selected-->
+            <materialDesign:Card Grid.Row="0" Margin="3">
+                <WrapPanel>
+                    <TextBox materialDesign:HintAssist.Hint="Tên đăng nhập"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             VerticalAlignment="Center" Margin="3" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:HintAssist.Hint="Tên hiển thị"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             VerticalAlignment="Center" Margin="3" Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <PasswordBox  
+                        x:Name="PasswordBox" Margin="4"
+                        materialDesign:HintAssist.Hint="Password"  
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+                        materialDesign:HintAssist.HelperText="At least 8 characters" />
+                    <ComboBox materialDesign:HintAssist.Hint="Quyền" IsEditable="True" 
+                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                              ItemsSource="{Binding AccountRole}" DisplayMemberPath="DisplayName" 
+                              SelectedItem="{Binding SelectedAccountRole, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                    </ComboBox>
+                </WrapPanel>
+            </materialDesign:Card>
+
+            <!--Button items-->
+            <materialDesign:Card Grid.Row="1" Margin="3">
+                <WrapPanel>
+                    <Button Content="Thêm" Margin="5" Width="100" Command="{Binding AddCommand}"></Button>
+                    <Button Content="Sửa" Margin="5" Width="100" Command="{Binding EditCommand}"></Button>
+                    <Button Content="Xóa" Margin="5" Width="100" Command="{Binding DeleteCommand}"></Button>
+                    <Button Content="Đổi mật khẩu" Margin="5" Width="120" Command="{Binding ChangePasswordCommand}"></Button>
+                </WrapPanel>
+            </materialDesign:Card>
+
+            <!--List data-->
+            <materialDesign:Card Grid.Row="2" Margin="3" VerticalAlignment="Stretch">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ListView ItemsSource="{Binding List}" SelectedItem="{Binding SelectedUserItem, Mode=OneWayToSource}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}"></GridViewColumn>
+                                <GridViewColumn Header="Tên đăng nhập" DisplayMemberBinding="{Binding UserName}"></GridViewColumn>
+                                <GridViewColumn Header="Tên hiển thị" DisplayMemberBinding="{Binding DisplayName}"></GridViewColumn>
+                                <GridViewColumn Header="Quyền hạn" DisplayMemberBinding="{Binding AccountRole.DisplayName}"></GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </ScrollViewer>
+            </materialDesign:Card>
+        </Grid>
+    </Grid>
+</Window>
